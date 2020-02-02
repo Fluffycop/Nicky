@@ -7,10 +7,15 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class Nick
 {
     private static final SQL database = Nicky.getNickDatabase();
+    private static ExecutorService exec = Executors.newSingleThreadExecutor();
 
     private OfflinePlayer offlinePlayer;
     private String uuid;
@@ -126,7 +131,13 @@ public class Nick
             nickname = nickname.substring( 0, Nicky.getLength() + 1 );
         }
 
-        nickname = Utils.translateColors( nickname, offlinePlayer );
+        String finalNickname = nickname;
+        Future<String> futureNick = exec.submit(() -> Utils.translateColors(finalNickname, offlinePlayer ));
+        try {
+            nickname = futureNick.get();
+        }catch(ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         if( addPrefix && !Nicky.getNickPrefix().equals( "" ) )
         {

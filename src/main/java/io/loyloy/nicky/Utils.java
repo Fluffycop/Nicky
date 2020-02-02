@@ -11,7 +11,8 @@ public class Utils
 
         for( ChatColor color : ChatColor.values() )
         {
-            if( Nicky.getVaultPerms().playerHas( null, player, "nicky.color." + color.toString().substring( 1 ) ) || color.toString().substring( 1 ).equals( "r" ) )
+            boolean hasColorPerm = Nicky.getVaultPerms().playerHas( null, player, "nicky.color." + color.toString().substring( 1 ) );
+            if(hasColorPerm || color.toString().substring( 1 ).equals( "r" ) )
             {
                 colorsToTranslate.append( color.getChar() );
             }
