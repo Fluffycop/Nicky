@@ -1,5 +1,7 @@
 Nicky
 =====
+Fork of the Nicky plugin. Just fixes a bug when working w/ LuckPerms
+
 Simple SQL Nickname Plugin for Bukkit.
 
 Commands
